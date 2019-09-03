@@ -28,7 +28,7 @@
       "name": "[variables('appStorageName')]",
       "type": "Microsoft.Storage/storageAccounts",
       "location": "[parameters('location')]",
-      "apiVersion": "2018-02-01",
+      "apiVersion": "2019-04-01",
       "sku": {
         "name": "[parameters('storageType')]"
       },
@@ -60,7 +60,11 @@
   "outputs": {
     "storage": {
       "type": "string",
-      "value": "[variables('appStorageName')]"
+      "value": "[reference(resourceId('Microsoft.Storage/storageAccounts', variables('appStorageName'))).primaryEndpoints.web]"
+    },
+    "key": {
+      "type": "string",
+      "value": "[listKeys(resourceId('Microsoft.Storage/storageAccounts', variables('appStorageName')), '2019-04-01').keys[0].value]"
     }
   }
 }
