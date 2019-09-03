@@ -10,7 +10,17 @@
         "Standard_GRS",
         "Standard_RAGRS",
         "Premium_LRS"
-      ]
+      ],
+      "metadata": {
+        "description": "Storage account type."
+      }
+    },
+    "ipRules": {
+      "type": "array",
+      "defaultValue": [],
+      "metadata": {
+        "description": "IP Filtering rules for the storage account."
+      }
     },
     "location": {
       "type": "string",
@@ -51,7 +61,7 @@
         "networkAcls": {
           "bypass": "AzureServices",
           "defaultAction": "Allow",
-          "ipRules": [],
+          "ipRules": "[parameters('ipRules')]",
           "virtualNetworkRules": []
         }
       }
