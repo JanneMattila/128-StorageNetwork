@@ -2,8 +2,7 @@ Param (
     [string] $ResourceGroupName = "storagenetwork-local-rg",
     [string] $Location = "West Europe",
     [string] $Template = "$PSScriptRoot\azuredeploy.json",
-    [string] $TemplateParameters = "$PSScriptRoot\azuredeploy.parameters.json",
-    [string] $DynamicParameter1 = "parameter2local"
+    [string] $TemplateParameters = "$PSScriptRoot\azuredeploy.parameters.json"
 )
 
 $ErrorActionPreference = "Stop"
@@ -33,7 +32,7 @@ if ($null -eq (Get-AzureRmResourceGroup -Name $ResourceGroupName -Location $Loca
 
 # Create additional parameters that we pass to the template deployment
 $additionalParameters = New-Object -TypeName hashtable
-$additionalParameters['dynamicParameter1'] = $DynamicParameter1
+#$additionalParameters['dynamicParameter1'] = $DynamicParameter1
 
 $result = New-AzureRmResourceGroupDeployment `
     -DeploymentName $deploymentName `
@@ -46,11 +45,11 @@ $result = New-AzureRmResourceGroupDeployment `
 
 $result
 
-if ($null -eq $result.Outputs.variableName)
+if ($null -eq $result.Outputs.storage)
 {
     Throw "Template deployment didn't return 'output' variables correctly and therefore deployment is cancelled."
 }
 
-$variableName = $result.Outputs.variableName.value
+$variableName = $result.Outputs.storage.value
 
-Write-Host "##vso[task.setvariable variable=Custom.VariableName;]$variableName"
+Write-Host "##vso[task.setvariable variable=Custom.Storage;]$variableName"
