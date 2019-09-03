@@ -14,9 +14,9 @@ Select-AzureRmSubscription -SubscriptionName <YourSubscriptionName>
 cd .\deploy\
 
 # Execute deployment with "local" development defaults:
-.\deploy.ps1
+.\deploy.ps1 -IPRestrictions "123.123.123.123","321.321.321.321"
 
 # Execute deployment with overriding defaults in command-line:
-.\deploy.ps1 -ResourceGroupName "storagenetwork-dev-rg" -Location "North Europe"
+.\deploy.ps1  -IPRestrictions "123.123.123.123","321.321.321.321" -ResourceGroupName "storagenetwork-dev-rg" -Location "North Europe"
 
 ```
