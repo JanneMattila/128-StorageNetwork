@@ -5,8 +5,8 @@ Param (
     [Parameter(HelpMessage="Deployment target resource group location")] 
     [string] $Location = "West Europe",
 
-    [Parameter(HelpMessage="IP Rules")] 
-    [string[]] $IPRules,
+    [Parameter(HelpMessage="IP Restrictions for the storage acceount")] 
+    [string[]] $IPRestrictions,
 
     [string] $Template = "$PSScriptRoot\azuredeploy.json",
     [string] $TemplateParameters = "$PSScriptRoot\azuredeploy.parameters.json"
@@ -20,7 +20,7 @@ $deploymentName = "Local-$date"
 if ([string]::IsNullOrEmpty($env:RELEASE_DEFINITIONNAME))
 {
    Write-Host (@"
-Not executing inside VSTS Release Management.
+Not executing inside Azure DevOps Release Management.
 Make sure you have done "Login-AzureRmAccount" and
 "Select-AzureRmSubscription -SubscriptionName name"
 so that script continues to work correctly for you.
@@ -40,10 +40,16 @@ if ($null -eq (Get-AzureRmResourceGroup -Name $ResourceGroupName -Location $Loca
 # Create additional parameters that we pass to the template deployment
 $additionalParameters = New-Object -TypeName hashtable
 
-if ($IPRules -ne $null)
+if ($IPRestrictions -ne $null)
 {
+    $rules = New-Object System.Collections.ArrayList
     Write-Host "Following IP Rules will be set:"
-    $additionalParameters['ipRules'] = $IPRules
+    foreach($rule in $IPRestrictions)
+    {
+        Write-Host $rule
+        $rules.Add(@{"value"=$rule}) | Out-Null
+    }
+    $additionalParameters['ipRules'] = $rules.ToArray()
 }
 else
 {
