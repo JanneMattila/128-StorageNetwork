@@ -1,6 +1,13 @@
 Param (
+    [Parameter(HelpMessage="Deployment target resource group")] 
     [string] $ResourceGroupName = "storagenetwork-local-rg",
+
+    [Parameter(HelpMessage="Deployment target resource group location")] 
     [string] $Location = "West Europe",
+
+    [Parameter(HelpMessage="IP Rules")] 
+    [string[]] $IPRules,
+
     [string] $Template = "$PSScriptRoot\azuredeploy.json",
     [string] $TemplateParameters = "$PSScriptRoot\azuredeploy.parameters.json"
 )
@@ -32,7 +39,16 @@ if ($null -eq (Get-AzureRmResourceGroup -Name $ResourceGroupName -Location $Loca
 
 # Create additional parameters that we pass to the template deployment
 $additionalParameters = New-Object -TypeName hashtable
-#$additionalParameters['dynamicParameter1'] = $DynamicParameter1
+
+if ($IPRules -ne $null)
+{
+    Write-Host "Following IP Rules will be set:"
+    $additionalParameters['ipRules'] = $IPRules
+}
+else
+{
+    Write-Warning "No IP Rules set."
+}
 
 $result = New-AzureRmResourceGroupDeployment `
     -DeploymentName $deploymentName `
