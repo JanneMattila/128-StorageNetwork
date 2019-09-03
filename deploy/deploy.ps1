@@ -1,3 +1,30 @@
+<#
+.SYNOPSIS
+Deploy Azure Storage account and apply IP Restrictions
+to it based on user provided parameters.
+
+.DESCRIPTION
+Demonstration application for ARM template deployment
+and Azure Storage account handling.
+
+.PARAMETER ResourceGroupName
+    Deployment target resource group.
+
+.PARAMETER Location
+    Deployment target resource group location.
+
+.PARAMETER IPRestrictions
+    IP Restrictions for the storage acceount.
+
+.LINK
+See original source code from GitHub:
+https://github.com/JanneMattila/128-StorageNetwork
+
+.EXAMPLE
+.\deploy.ps1 -IPRestrictions "123.123.123.123","321.321.321.321"
+
+Deploys ARM template and applies two IP rules to it.
+#>
 Param (
     [Parameter(HelpMessage="Deployment target resource group")] 
     [string] $ResourceGroupName = "storagenetwork-local-rg",
