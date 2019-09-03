@@ -14,7 +14,7 @@ and Azure Storage account handling.
     Deployment target resource group location.
 
 .PARAMETER IPRestrictions
-    IP Restrictions for the storage acceount.
+    IP Restrictions for the storage account.
 
 .LINK
 See original source code from GitHub:
